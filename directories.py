@@ -10,3 +10,9 @@ class Directory:
             if part not in self.child:
                 self.child[part] = Directory(part, self)
             self = self.child[part]
+
+    def list(self, depth=0):
+        sorted_keys = sorted(self.child.keys())
+        for name in sorted_keys:
+            print('  ' * depth + name)
+            self.child[name].list(depth + 1)
