@@ -2,7 +2,7 @@ import pytest
 
 from directories import Directory
 
-def test_create():
+def test_add():
     root = Directory("")
     root.add("fruits/apples/fuji")
     assert "fruits" in root.child
@@ -27,8 +27,4 @@ fruits
 vegetables"""
 
     assert captured == expected
-
-
-
-
 
