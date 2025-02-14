@@ -18,16 +18,32 @@ class Directory:
             print('  ' * depth + name)
             self.child[name].list(depth + 1)
 
+    def delete(self, path):
+        parts = path.split('/')
+        parent = self.get_parent(parts[:-1])
 
-    def get_directory(self, path):
-        # Returns the referenced directory node given the path
-        if path == "":
-            return self
-        directories = path.split('/')
-        for directory in directories:
-            if directory in self.child:
-                self = self.child[directory]
-            else:
-                return None
-        return directory
+        if parent and parts[-1] in parent.child:
+            del parent.child[parts[-1]]
+        else:
+            missing_path = []
+
+            for part in parts:
+                if part in self.child:
+                    self = self.child[part]
+                else:
+                    missing_path.append(part)
+                    break
+            print(f"Cannot delete {path} - {'/'.join(missing_path)} does not exist")
+
+
+    def get_parent(self, parts):
+        # Takes in a split directory path and attempts to locate the parent
+        for part in parts:
+            if part not in self.child:
+                return None # If any part of the path doesn't exist, return None
+            self = self.child[part]
+        return self
+
+
+
 
