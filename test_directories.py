@@ -28,3 +28,10 @@ vegetables"""
 
     assert captured == expected
 
+def test_move():
+    root = Directory("")
+    root.add("fruits/apples")
+    root.add("vegetables")
+    root.move("fruits/apples", "vegetables")
+    assert "apples" in root.children["vegetables"].children
+    assert "fruits" in root.children and "apples" not in root.children["fruits"]
