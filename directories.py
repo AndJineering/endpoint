@@ -35,6 +35,27 @@ class Directory:
                     break
             print(f"Cannot delete {path} - {'/'.join(missing_path)} does not exist")
 
+    def move(self, src, dest):
+        src_parts = src.split('/')
+        dest_parts = dest.split('/')
+
+        src_parent = self.get_parent(src_parts[:-1])
+        if not src_parent or src_parts[-1] not in src_parent.child:
+            print(f"Cannot move {src} - {src} does not exist")
+            return
+
+        src_dir = src_parent.child.pop(src_parts[-1])
+
+        for part in dest_parts:
+            if part not in self.child:
+                self.child[part] = Directory(part, self)
+            self = self.child[part]
+
+        self.child[src_dir.name] = src_dir
+        src_dir.parent = self
+
+
+
 
     def get_parent(self, parts):
         # Takes in a split directory path and attempts to locate the parent
@@ -43,7 +64,5 @@ class Directory:
                 return None # If any part of the path doesn't exist, return None
             self = self.child[part]
         return self
-
-
 
 

@@ -60,4 +60,11 @@ def test_move():
     assert "apples" in root.child["vegetables"].child
     assert "fruits" in root.child and "apples" not in root.child["fruits"].child
 
+def test_move_non_existent(capsys):
+    root = Directory("")
+    root.move("fruits/apples", "vegetables")
+    captured = capsys.readouterr().out.strip()
+    expected = "Cannot delete fruits/apples - fruits/apples does not exist"
+    assert captured == expected
+
 
