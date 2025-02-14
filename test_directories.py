@@ -5,8 +5,10 @@ from directories import Directory
 def test_add():
     root = Directory("")
     root.add("fruits/apples/fuji")
+    root.add("fruits/bananas")
     assert "fruits" in root.child
     assert "apples" in root.child["fruits"].child
+    assert "bananas" in root.child["fruits"].child
     assert "fuji" in root.child["fruits"].child["apples"].child
 
 def test_list_sorted(capsys):
@@ -64,7 +66,7 @@ def test_move_non_existent(capsys):
     root = Directory("")
     root.move("fruits/apples", "vegetables")
     captured = capsys.readouterr().out.strip()
-    expected = "Cannot delete fruits/apples - fruits/apples does not exist"
+    expected = "Cannot move fruits/apples - fruits/apples does not exist"
     assert captured == expected
 
 

@@ -5,6 +5,7 @@ class Directory:
         self.child = {}
 
     def add(self, path):
+        # Creates a new directory
         parts = path.split('/')
         for part in parts:
             if part not in self.child:
@@ -19,8 +20,9 @@ class Directory:
             self.child[name].list(depth + 1)
 
     def delete(self, path):
+        # Removes a directory at the path specified
         parts = path.split('/')
-        parent = self.get_parent(parts[:-1])
+        parent = self._get_parent(parts[:-1])
 
         if parent and parts[-1] in parent.child:
             del parent.child[parts[-1]]
@@ -36,10 +38,11 @@ class Directory:
             print(f"Cannot delete {path} - {'/'.join(missing_path)} does not exist")
 
     def move(self, src, dest):
+        # Moves a directory from one path to another, creating it if it does not already exist.
         src_parts = src.split('/')
         dest_parts = dest.split('/')
 
-        src_parent = self.get_parent(src_parts[:-1])
+        src_parent = self._get_parent(src_parts[:-1])
         if not src_parent or src_parts[-1] not in src_parent.child:
             print(f"Cannot move {src} - {src} does not exist")
             return
@@ -54,15 +57,11 @@ class Directory:
         self.child[src_dir.name] = src_dir
         src_dir.parent = self
 
-
-
-
-    def get_parent(self, parts):
+    def _get_parent(self, parts):
         # Takes in a split directory path and attempts to locate the parent
         for part in parts:
             if part not in self.child:
                 return None # If any part of the path doesn't exist, return None
             self = self.child[part]
         return self
-
 
